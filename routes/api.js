@@ -6,10 +6,10 @@ var crawler = require('../crawler');
   post api, the search
   req.body.q    the string that contains the hashtag
 */
-router.pose('/search', function(req, res, next) {
+router.post('/search', function(req, res, next) {
   crawler.searchHashTag(req.body.q, function(tweets){
     // process the returning data
-    
+
   });
 });
 
