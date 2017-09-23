@@ -1,20 +1,22 @@
 var language = require('@google-cloud/language');
 
- var client = language({
-    key: 'AIzaSyC9ohh_zyhW70aKqWR9QWbjrgMha3XqE6g'
- });
+var client = language({
+  projectId: 'my-project-1500315065039',
+  keyFilename: './credentials/MyProject-b522b47ba2dc.json'
+});
 
- var content = 'Hello, world!';
- var type = language.v1.types.Document.Type.PLAIN_TEXT;
- var document = {
-     content : content,
-     type : type
- };
- client.analyzeSentiment({document: document}).then(function(responses) {
-     var response = responses[0];
-     console.log(JSON.stringify(responses));
-     // doThingsWith(response)
- })
- .catch(function(err) {
-     console.error(err);
- });
+var self = {};
+
+/*
+  @param content the string that contains the content sentence
+  @param callback the callback function that returns the data
+*/
+self.getSentiment = function(content, callback){
+  client.analyzeSentiment({document: {type: 'PLAIN_TEXT', content: content}}).then(function(responses) {
+    console.log(JSON.stringify(responses));
+  })
+  .catch(function(err) {
+    console.error(err);
+  });
+
+}
