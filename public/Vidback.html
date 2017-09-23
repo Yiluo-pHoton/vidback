@@ -35,20 +35,21 @@
      */
     if (detectWebGLContext()) {
 
-        var globe = DAT.Globe(document.getElementById('container'), function(label) {
-            return new THREE.Color([
-                0x004c7f, 0x00785f, 0x00a53f, 0x00d21f, 0x00ff00][label]);
-        });
+      var container = document.getElementById('container');
+      var globe = new DAT.Globe(container);
+      globe.animate();
 
 
        xhr = new XMLHttpRequest();
-       xhr.open('GET', '/js/globe.json', true);
+       xhr.open('GET', '/js/data.json', true);
        xhr.onreadystatechange = function(e) {
            if (xhr.readyState === 4) {
                if (xhr.status === 200) {
                    var data = JSON.parse(xhr.responseText);
                    window.data = data;
-                   globe.addData(data, {format: 'legend'});
+                   for ( var i = 0; i < data.length; i ++ ) {
+                      globe.addData( data[i][1], {format: 'magnitude', name: data[i][0]} );
+                    }
                    globe.createPoints();
                    globe.animate();
                }

@@ -11,7 +11,7 @@ var client = new Twitter({
 });
 
 db.serialize(function() {
-  db.run('CREATE TABLE IF NOT EXISTS places (pid integer, lat double, lng double, primary key(pid));');
+  db.run('CREATE TABLE IF NOT EXISTS places (pid varchar(255), lat double, lng double, primary key(pid));');
 });
 
 var i = 0;
@@ -26,13 +26,18 @@ setInterval(function(){
 
   var city = cities[i];
 
-  searchCity(cities[i].city + ', ' + cities[i].state, function(place){
+  searchCity(city.city + ', ' + city.state, function(place){
     if(place){
       db.serialize(function(){
-        db.run('INSERT INTO places VALUES (?,?,?)', [parseInt(place.id), parseFloat(city.latitude), parseFloat(city.longitude)]);
+        try{
+          db.run('INSERT INTO places VALUES (?,?,?)', [place.id, parseFloat(city.latitude), parseFloat(city.longitude)]);
+        }
+        catch(err){}
       });
     }
   });
+
+  i++;
 }, 60000);
 
 
