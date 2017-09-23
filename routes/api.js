@@ -7,7 +7,7 @@ var crawler = require('../crawler');
   req.body.q    the string that contains the hashtag
 */
 router.post('/search', function(req, res, next) {
-  crawler.searchHashTag(req.body.q, function(tweets){
+  crawler.searchHotWord(req.body.q, function(tweets){
     // process the returning data
 
   });

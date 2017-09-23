@@ -1,4 +1,5 @@
 var Twitter = require('twitter');
+var cities = require('./data/cities.json');
 
 var client = new Twitter({
   consumer_key: '4rEXgKnvdf9EVLwPSpdoUQ3LP',
@@ -10,11 +11,18 @@ var client = new Twitter({
 
 var self = {};
 
-self.searchHashTag = function(qStr, callback){
-  client.get('search/tweets', {q: qStr}, function(error, tweets, response) {
-     console.log(tweets);
-     callback(tweets);
-  });
+self.searchHotWord = function(qStr, callback){
+
+  const numCities = 50;
+
+  for(var i = 0; i < numCities; i++){
+    var city = cities[i];
+    var geoCodeStr = city.latitude+','+city.longitude+',90km';
+    client.get('search/tweets', {q: qStr, geocode: geoCodeStr}, function(error, tweets, response) {
+       console.log(tweets);
+       callback(tweets);
+    });
+  }
 }
 
 module.exports = self;
