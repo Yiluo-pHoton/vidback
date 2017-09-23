@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Vidback</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link type="text/css" href="./styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
 
@@ -11,18 +12,56 @@
 <body>
 <div class="container">
     <div class="row ">
+        <div id="container"></div>
 
     </div>
 </div>
 <script type="text/javascript" src="./globe.js"></script>
 <script src="./three.min.js"></script>
 <script>
+    function detectWebGLContext () {
+        // Create canvas element. The canvas is not added to the
+        // document itself, so it is never displayed in the
+        // browser window.
+        var canvas = document.createElement("canvas");
+        // Get WebGLRenderingContext from canvas element.
+        var gl = canvas.getContext("webgl")
+            || canvas.getContext("experimental-webgl");
+        // Report the result.
+        if (gl && gl instanceof WebGLRenderingContext) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     /*
     Check the compatibility of webgl
      */
-    if (Detector.webgl) {
-        var globe = DAT.Globe()
-        animate();
+    if (detectWebGLContext()) {
+       // var globe = DAT.Globe(document.getElementById("container"));
+
+
+        var globe = DAT.Globe(document.getElementById('container'), function(label) {
+            return new THREE.Color([
+                0x004c7f, 0x00785f, 0x00a53f, 0x00d21f, 0x00ff00][label]);
+        });
+
+
+//        xhr = new XMLHttpRequest();
+//        xhr.open('GET', 'treecover.json', true);
+//        xhr.onreadystatechange = function(e) {
+//            if (xhr.readyState === 4) {
+//                if (xhr.status === 200) {
+//                    var data = JSON.parse(xhr.responseText);
+//                    window.data = data;
+//                    globe.addData(data, {format: 'legend'});
+//                    globe.createPoints();
+//                    globe.animate();
+//                }
+//            }
+//        };
+//        xhr.send(null);
+
     } else {
         var warning = Detector.getWebGLErrorMessage();
         document.getElementById('container').appendChild(warning);
