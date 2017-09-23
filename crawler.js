@@ -14,13 +14,22 @@ var self = {};
 self.searchHotWord = function(qStr, callback){
 
   const numCities = 50;
+  var count = 0;
+  var spots = [];
 
   for(var i = 0; i < numCities; i++){
-    var city = cities[i];
+    let city = cities[i];
     var geoCodeStr = city.latitude+','+city.longitude+',90km';
     client.get('search/tweets', {q: qStr, geocode: geoCodeStr}, function(error, tweets, response) {
-       console.log(tweets);
-       callback(tweets);
+      spots.push({
+        lat: city.latitude,
+        lng: city.longitude,
+        statuses: statuses
+      );
+      count++;
+
+      if(count >= numCities)
+        callback(spots);
     });
   }
 }
