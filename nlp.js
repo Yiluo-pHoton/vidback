@@ -12,11 +12,13 @@ var self = {};
   @param callback the callback function that returns the data
 */
 self.getSentiment = function(content, callback){
-  client.analyzeSentiment({document: {type: 'PLAIN_TEXT', content: content}}).then(function(responses) {
-    console.log(JSON.stringify(responses));
+  client.analyzeSentiment({document: {type: 'PLAIN_TEXT', content: content}}).then(function(response) {
+    callback(response[0].documentSentiment);
   })
   .catch(function(err) {
     console.error(err);
   });
 
 }
+
+module.exports = self;

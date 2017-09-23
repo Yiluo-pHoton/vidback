@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-
+    <script src="/js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
     <div class="search-container" >
       <div class="search-bar">
         <input type="text" id="search" placeholder="# Hashtag">
         <span class="input-group-btn">
-            <button class="btn" type="button">Search</button>
+            <button class="btn" id="search-btn" type="button">Search</button>
         </span>
       </div>
       <hr/>
@@ -71,9 +71,25 @@
        };
        xhr.send(null);
 
+       $("#search-btn").click(function(){
+         $.ajax({
+           method: "POST",
+           url: "/api/search",
+           dataType: "json",
+           data: {q: $("#search").val()},
+           success: function(data){
+             console.log(data);
+           },
+           error: function(){
+             alert("Lost the connection to the server");
+           }
+           
+         });
+       });
+
     } else {
-        var warning = Detector.getWebGLErrorMessage();
-        document.getElementById('container').appendChild(warning);
+        alert("WebGL isn't supported in this browser");
+        window.close();
     }
 </script>
 

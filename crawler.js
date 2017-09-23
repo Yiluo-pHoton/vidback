@@ -21,11 +21,14 @@ self.searchHotWord = function(qStr, callback){
     let city = cities[i];
     var geoCodeStr = city.latitude+','+city.longitude+',90km';
     client.get('search/tweets', {q: qStr, geocode: geoCodeStr}, function(error, tweets, response) {
+      if(!!!tweets.statuses){
+        throw 'Quota Exceeded';
+      }
       spots.push({
         lat: city.latitude,
         lng: city.longitude,
-        statuses: statuses
-      );
+        statuses: tweets.statuses
+      });
       count++;
 
       if(count >= numCities)
