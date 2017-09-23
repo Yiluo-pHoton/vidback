@@ -9,6 +9,7 @@ var crawler = require('../crawler');
 router.pose('/search', function(req, res, next) {
   crawler.searchHashTag(req.body.q, function(tweets){
     // process the returning data
+    
   });
 });
 
