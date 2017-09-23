@@ -7,6 +7,14 @@ var client = new Twitter({
   access_token_secret: ''
 });
 
-client.get('search/tweets', {q: '#MakeAmericaGreatAgain'}, function(error, tweets, response) {
-   console.log(tweets);
-});
+
+var self = {};
+
+self.searchHashTag = function(qStr, callback){
+  client.get('search/tweets', {q: qStr}, function(error, tweets, response) {
+     console.log(tweets);
+     callback(tweets);
+  });
+}
+
+module.exports = self;
