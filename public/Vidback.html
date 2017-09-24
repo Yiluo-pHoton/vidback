@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+      .node circle {
+        stroke: #3a403d;
+        stroke-width: .5px;
+      }
+    </style>
     <script src="/js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
+
     <div class="search-container" >
       <div class="search-background">
         <div class="search-bar">
@@ -23,17 +30,28 @@
         </div>
       </div>
       <img src="/img/loading.gif" id="loading-gif" style="height:50px; margin-top:10px;" hidden="true"/>
-      <button class="btn btn-change-view" hidden="true">See More</button>
+      <button class="btn btn-change-view" hidden="true" onClick="seeMore();">See More</button>
     </div>
     <div class="globe-container">
       <div id="container"></div>
     </div>
 
-
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script type="text/javascript" src="/js/globe.js"></script>
 <script src="/js/three.min.js"></script>
 <script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
 <script>
+    var spots = [];
+    function seeMore(){
+        if(spots.length == 0){
+          alert('Data not available!');
+          return;
+        }
+
+        bubbleChart();
+        console.log('going to bubble chart');
+    }
+
     function generateRandomNumber(min, max) {
         return Math.random() * (max - min) + min;
     };
@@ -88,6 +106,7 @@
              console.log(data);
              var displayArr = [];
              var numSpot = data.length;
+             spots = data;
              data.forEach(function(spot){
                var totScore = 0.0;
                var totMag = 0.0;
@@ -135,6 +154,26 @@
     } else {
         alert("WebGL isn't supported in this browser");
         window.close();
+    }
+
+    function bubbleChart(){
+      var graph = [];
+      spots.forEach(function(spot){
+        if(spot.statuses.length > 0){
+          spot.statuses.forEach(function(status){
+            let mstatus = {};
+            mstatus.text = status.text;
+            mstatus.sentiment = status.sentiment;
+            mstatus.emotion = status.emotion;
+            mstatus.size = Math.pow(status.sentiment.magnitude + 1, 30);
+            mstatus.radius = (status.size > 3)?status.size:3;
+            graph.push(mstatus);
+          });
+        }
+      });
+
+      sessionStorage.setItem("graph", JSON.stringify(graph));
+      window.open("bubblechart.html","_blank");
     }
 </script>
 

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var crawler = require('../crawler');
 var nlp = require('../nlp.js');
+var classifier = require('../machine_learning/classifier');
 
 /*
   post api, the search
@@ -32,7 +33,9 @@ router.post('/search', function(req, res, next) {
               }
               return;
             }
+            let emotion = classifier.predict([result.score, result.magnitude]);
             spots[spot_index].statuses[status_index].sentiment = result;
+            spots[spot_index].statuses[status_index].emotion = emotion;
 
             numPending --;
             if(numPending == 0){

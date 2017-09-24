@@ -10,6 +10,10 @@
   <body>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
+    var graph = sessionStorage.getItem("graph");
+    console.log(graph);
+    graph = JSON.parse(graph);
+
     var width = window.innerWidth, height = window.innerHeight, sizeDivisor = 100, nodePadding = 2.5;
 
     var svg = d3.select("body")
@@ -25,9 +29,27 @@
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
         .force("charge", d3.forceManyBody().strength(-15));
 
-    d3.csv("/test.csv", types, function(error,graph){
-      if (error) throw error;
-
+  //     graph = [{ created_at: 'Fri Sep 22 21:11:42 +0000 2017',
+  //      id: 911337232488951800,
+  //      id_str: '911337232488951813',
+  //      text: 'Schedule, what schedule? Students lining up to learn about @GE_Digital with the @GEDetroit team! #mhacks https://t.co/J3Q5nyWyxZ',
+  //     size: 20.0,
+  //   radius: 20,
+  // emotion: 4},
+  // { created_at: 'Fri Sep 22 21:11:42 +0000 2017',
+  //  id: 911337232488951800,
+  //  id_str: '911337232488951813',
+  //  text: 'Schedule, what schedule? Students lining up to learn about @GE_Digital with the @GEDetroit team! #mhacks https://t.co/J3Q5nyWyxZ',
+  // size: 20.0,
+  // radius: 20,
+  // emotion: 4},
+  // { created_at: 'Fri Sep 22 21:11:42 +0000 2017',
+  //  id: 911337232488951800,
+  //  id_str: '911337232488951813',
+  //  text: 'Schedule, what schedule? Students lining up to learn about @GE_Digital with the @GEDetroit team! #mhacks https://t.co/J3Q5nyWyxZ',
+  // size: 20.0,
+  // radius: 20,
+  // emotion: 4}];
       // sort the nodes so that the bigger ones are at the back
       graph = graph.sort(function(a,b){ return b.size - a.size; });
 
@@ -47,7 +69,7 @@
         .data(graph)
         .enter().append("circle")
           .attr("r", function(d) { return d.radius; })
-          .attr("fill", function(d) { return color(d.continent); })
+          .attr("fill", function(d) { return color(d.emotion); })
           .attr("cx", function(d){ return d.x; })
           .attr("cy", function(d){ return d.y; })
           .call(d3.drag()
@@ -55,7 +77,6 @@
               .on("drag", dragged)
               .on("end", dragended));
 
-    });
 
     function dragstarted(d) {
       if (!d3.event.active) simulation.alphaTarget(.03).restart();
@@ -74,12 +95,6 @@
       d.fy = null;
     }
 
-    function types(d){
-      d.gdp = +d.gdp;
-      d.size = +d.gdp / sizeDivisor;
-      d.size < 3 ? d.radius = 3 : d.radius = d.size;
-      return d;
-    }
     </script>
   </body>
 </html>
