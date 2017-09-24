@@ -42,7 +42,7 @@ body {
 
 .search-bar {
   width: 30px;
-  height:80px
+  height:80px;
   z-index: 20;
 }
 
@@ -110,4 +110,15 @@ hr {
 
 p{
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.legend{
+  position: fixed;
+  height:100px;
+  z-index:10;
+  border-radius: 10px;
+  padding: 20px 10px;
+  margin-left: 23px;
+  font-size:15px;
+  color: #999;
 }
