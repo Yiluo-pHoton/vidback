@@ -22,7 +22,7 @@ body {
   display: inline-block;
   float: left;
   width: 390px;
-  padding: 100px 20px;
+  padding: 150px 20px;
 
 }
 
@@ -98,6 +98,12 @@ body {
 .btn-change-view:hover{
   background: #BBDEFB;
   color: #4E342E;
+}
+
+.color-strip {
+  width: 300px;
+  height: 20px;
+  background: linear-gradient(to right, red , green); /* Standard syntax */
 }
 
 hr {
