@@ -23,6 +23,7 @@ self.searchHotWord = function(qStr, callback){
     client.get('search/tweets', {q: qStr, geocode: geoCodeStr}, function(error, tweets, response) {
       if(!!!tweets.statuses){
         throw 'Quota Exceeded';
+        return;
       }
       spots.push({
         lat: city.latitude,

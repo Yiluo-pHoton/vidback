@@ -12,29 +12,28 @@ router.post('/search', function(req, res, next) {
     crawler.searchHotWord(req.body.q, function(spots){
       let numPending = 0;
       let isEmpty = true;
-      spots.forEach(function(spot){
-        if(spot.statuses.length != 0)
+      spots.forEach(function(spot, spot_index){
+        if(spot.statuses){
           isEmpty = false;
 
-        spot.statuses.forEach(function(status, index){
-          numPending ++;
-          nlp.getSentiment(status.text, function(result){
-            statuses[index].sentiment = result;
+          spot.statuses.forEach(function(status, status_index){
+            numPending ++;
+            nlp.getSentiment(status.text, function(result){
+              spots[spot_index].statuses[status_index].sentiment = result;
 
-            numPending --;
-            if(numPending == 0){
-              res.json(spots);
-            }
+              numPending --;
+              if(numPending == 0){
+                res.json(spots);
+              }
+            });
           });
-        });
+        }
       });
 
       if(isEmpty){
         console.log('no content');
         res.json(spots);
       }
-
-      res.json(spots);
     });
   }
   catch(err){
