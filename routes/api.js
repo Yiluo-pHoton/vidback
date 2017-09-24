@@ -8,42 +8,46 @@ var nlp = require('../nlp.js');
   req.body.q    the string that contains the hashtag
 */
 router.post('/search', function(req, res, next) {
-  try{
-    crawler.searchHotWord(req.body.q, function(isSuccess,spots){
-      if(!isSuccess){
-        res.status(404).json({err_msg: 'Quota Exceeded'});
-        return;
-      }
+  console.log('request received');
+  crawler.searchHotWord(req.body.q, function(isSuccess,spots){
+    if(!isSuccess){
+      res.status(403).json({err_msg: 'Quota Exceeded'});
+      return;
+    }
 
-      let numPending = 0;
-      let isEmpty = true;
-      spots.forEach(function(spot, spot_index){
-        if(spot.statuses){
-          isEmpty = false;
+    let numPending = 0;
+    let isEmpty = true;
+    spots.forEach(function(spot, spot_index){
+      if(spot.statuses){
+        isEmpty = false;
+        let sentiment_fail = false;
 
-          spot.statuses.forEach(function(status, status_index){
-            numPending ++;
-            nlp.getSentiment(status.text, function(result){
-              spots[spot_index].statuses[status_index].sentiment = result;
-
-              numPending --;
-              if(numPending == 0){
-                res.json(spots);
+        spot.statuses.forEach(function(status, status_index){
+          numPending ++;
+          nlp.getSentiment(status.text, function(isSuccess, result){
+            if(!isSuccess){
+              if(!sentiment_fail){
+                res.status(403).json({err_msg: 'Quota Exceeded for Google'});
+                sentiment_fail = true;
               }
-            });
-          });
-        }
-      });
+              return;
+            }
+            spots[spot_index].statuses[status_index].sentiment = result;
 
-      if(isEmpty){
-        console.log('no content');
-        res.json(spots);
+            numPending --;
+            if(numPending == 0){
+              res.json(spots);
+            }
+          });
+        });
       }
     });
-  }
-  catch(err){
-    res.status(404).json({err_msg: 'Quota Exceeded'});
-  }
+
+    if(isEmpty){
+      console.log('no content');
+      res.json(spots);
+    }
+  });
 });
 
 module.exports = router;

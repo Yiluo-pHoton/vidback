@@ -13,10 +13,11 @@ var self = {};
 */
 self.getSentiment = function(content, callback){
   client.analyzeSentiment({document: {type: 'PLAIN_TEXT', content: content}}).then(function(response) {
-    callback(response[0].documentSentiment);
+    callback(true, response[0].documentSentiment);
   })
   .catch(function(err) {
     console.error(err);
+    callback(false);
   });
 
 }

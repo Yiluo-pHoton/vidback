@@ -22,7 +22,7 @@ client.get('search/tweets', {q: '', geocode: '37.757815,-122.5076404,1000km', la
   var count = tweets.statuses.length;
 
   tweets.statuses.forEach(function(status, index){
-    nlp.getSentiment(status.text, function(sentiment){
+    nlp.getSentiment(status.text, function(isSuccess, entiment){
       tweets.statuses[index].sentiment = sentiment;
       count--;
       if(count <= 0){
