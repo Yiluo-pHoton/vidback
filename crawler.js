@@ -22,7 +22,7 @@ self.searchHotWord = function(qStr, callback){
     var geoCodeStr = city.latitude+','+city.longitude+',90km';
     client.get('search/tweets', {q: qStr, geocode: geoCodeStr}, function(error, tweets, response) {
       if(!!!tweets.statuses){
-        throw 'Quota Exceeded';
+        callback(false);
         return;
       }
       spots.push({
@@ -33,7 +33,7 @@ self.searchHotWord = function(qStr, callback){
       count++;
 
       if(count >= numCities)
-        callback(spots);
+        callback(true, spots);
     });
   }
 }

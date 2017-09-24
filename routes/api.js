@@ -9,7 +9,12 @@ var nlp = require('../nlp.js');
 */
 router.post('/search', function(req, res, next) {
   try{
-    crawler.searchHotWord(req.body.q, function(spots){
+    crawler.searchHotWord(req.body.q, function(isSuccess,spots){
+      if(!isSuccess){
+        res.status(404).json({err_msg: 'Quota Exceeded'});
+        return;
+      }
+
       let numPending = 0;
       let isEmpty = true;
       spots.forEach(function(spot, spot_index){

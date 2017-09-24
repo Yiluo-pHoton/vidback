@@ -19,7 +19,7 @@
         </div>
         <hr/>
         <div class="introduction">
-          <p>This is a quick demo for the VidBack app. VidBack is a blablabla ...</p>
+          <p>VidBack: Users can get analyses of feedback and comments for specific events, products and elections by searching keywords. Data is visualized in perspective of geological areas and sentimental feelings to improve productivity. </p>
         </div>
       </div>
     </div>
@@ -32,6 +32,10 @@
 <script src="/js/three.min.js"></script>
 <script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
 <script>
+    function generateRandomNumber(min, max) {
+        return Math.random() * (max - min) + min;
+    };
+
     function detectWebGLContext () {
         // Create canvas element. The canvas is not added to the
         // document itself, so it is never displayed in the
@@ -53,26 +57,12 @@
     if (detectWebGLContext()) {
 
       var container = document.getElementById('container');
-      var globe = new DAT.Globe(container);
+      var globe = new DAT.Globe(container, {colorFn: function(x){
+        var c = new THREE.Color();
+        c.setHSL( ( 0.18+x ), 1.0, 0.5 );
+        return c;
+      }});
       globe.animate();
-
-
-      //  xhr = new XMLHttpRequest();
-      //  xhr.open('GET', '/js/data.json', true);
-      //  xhr.onreadystatechange = function(e) {
-      //      if (xhr.readyState === 4) {
-      //          if (xhr.status === 200) {
-      //              var data = JSON.parse(xhr.responseText);
-      //              window.data = data;
-      //              for ( var i = 0; i < data.length; i ++ ) {
-      //                 globe.addData( data[i][1], {format: 'magnitude', name: data[i][0]} );
-      //               }
-      //              globe.createPoints();
-      //              globe.animate();
-      //          }
-      //      }
-      //  };
-      //  xhr.send(null);
 
        $("#search-btn").click(function(){
          $.ajax({
@@ -83,6 +73,7 @@
            success: function(data){
              console.log(data);
              var displayArr = [];
+             var numSpot = data.length;
              data.forEach(function(spot){
                var totScore = 0.0;
                var totMag = 0.0;
@@ -100,8 +91,17 @@
 
                displayArr.push(spot.lat);
                displayArr.push(spot.lng);
-               displayArr.push(6*Math.abs(avgMag * avgScore));
-               displayArr.push((avgMag * avgScore)>0?1:-1);
+               displayArr.push(spot.statuses.length/20);
+               displayArr.push(avgMag * avgScore);
+
+               for(var i = 0; i < 800/numSpot; i++){
+                 displayArr.push(spot.lat + generateRandomNumber(-2, 2));
+                 displayArr.push(spot.lng + generateRandomNumber(-2, 2));
+                 displayArr.push(spot.statuses.length/20 + generateRandomNumber(-0.3, 0.3));
+                 displayArr.push(avgMag * avgScore + generateRandomNumber(-0.1, 0.1) );
+               }
+
+               console.log(avgMag * avgMag);
              });
 
              globe.addData( displayArr, {format: 'legend', name: 'twitter info'} );
