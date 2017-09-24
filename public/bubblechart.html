@@ -5,9 +5,23 @@
         stroke: #3a403d;
         stroke-width: .5px;
       }
+      .bubble-content {
+        position: fixed;
+        left: 10vw;
+        top: 10vh;
+        width: 80vw;
+        height: 20vh;
+        background: white;
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0.8;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+      }
     </style>
   </head>
   <body>
+    <div class="bubble-content" id="bubble-content"></div>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
     var graph = sessionStorage.getItem("graph");
@@ -181,6 +195,11 @@
           })
           .attr("cx", function(d){ return d.x; })
           .attr("cy", function(d){ return d.y; })
+          .on("mouseover", function(d) {
+            document.getElementById("bubble-content").innerHTML = d.text;
+            console.log("mouse over "+d.text);
+
+          })
           .call(d3.drag()
               .on("start", dragstarted)
               .on("drag", dragged)
