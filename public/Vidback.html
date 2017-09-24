@@ -19,10 +19,11 @@
         </div>
         <hr/>
         <div class="introduction">
-          <p>VidBack: <br>Users can get analyses of feedback and comments for specific events, products and elections by searching keywords.<br> Data is visualized in perspective of geological areas and sentimental feelings to improve productivity. </p>
+          <h4>VidBack:</h4> <p>Users can get analyses of feedback and comments for specific events, products and elections by searching keywords.<br> Data is visualized in perspective of geological areas and sentimental feelings to improve productivity. </p>
         </div>
       </div>
       <img src="/img/loading.gif" id="loading-gif" style="height:50px; margin-top:10px;" hidden="true"/>
+      <button class="btn btn-change-view" hidden="true">See More</button>
     </div>
     <div class="globe-container">
       <div id="container"></div>
@@ -68,6 +69,7 @@
        $("#search-btn").click(function(){
 
          $("#loading-gif").attr("hidden", false);
+         $(".btn-change-view").attr("hidden", true);
 
          $("#container").empty();
          var globe = new DAT.Globe(container, {colorFn: function(x){
@@ -117,6 +119,7 @@
              });
 
              $("#loading-gif").attr("hidden", true);
+             $(".btn-change-view").attr("hidden", false);
 
              globe.addData( displayArr, {format: 'legend', name: 'twitter info'} );
              globe.createPoints();

@@ -21,7 +21,7 @@ body {
 .search-container{
   display: inline-block;
   float: left;
-  width: 360px;
+  width: 390px;
   padding: 100px 20px;
 
 }
@@ -31,9 +31,8 @@ body {
   background-color: #555;
   height: 400px;
   z-index:10;
-  border-radius: 22px;
-  padding-top: 25px;
-  padding-left: 6px;
+  border-radius: 10px;
+  padding: 25px 15px;
 }
 
 .globe-container{
@@ -51,9 +50,9 @@ body {
   width: 210px;
   margin-left: 10px;
   margin-right: 10px;
-  background: #888;
+  background: #aaa;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   float: left;
   padding: 10px 10px;
   -webkit-border-radius: 5px;
@@ -78,9 +77,27 @@ body {
 
 .introduction{
   padding: 10px 20px;
-  font-size: 20px;
+  font-size: 16px;
   color: #aaa;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-change-view {
+  padding: 8px auto;
+  text-align: center;
+  font-size: 18px;
+  background: #666;
+  width: 100%;
+  margin-top: 20px;
+  color: #ccc;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.btn-change-view:hover{
+  background: #BBDEFB;
+  color: #4E342E;
 }
 
 hr {
