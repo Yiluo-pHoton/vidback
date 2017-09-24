@@ -14,7 +14,7 @@ body {
     font-family: sans-serif;
     font-size: 30px;
     font-weight: normal;
-    line-height: 20px;
+    line-height: 24px;
     height: 100%;
 }
 
@@ -77,7 +77,7 @@ body {
 }
 
 .introduction{
-  padding-top: 40px;
+  padding: 10px 20px;
   font-size: 20px;
   color: #aaa;
   font-family: Arial, Helvetica, sans-serif;
