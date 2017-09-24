@@ -22,6 +22,7 @@
           <p>VidBack: <br>Users can get analyses of feedback and comments for specific events, products and elections by searching keywords.<br> Data is visualized in perspective of geological areas and sentimental feelings to improve productivity. </p>
         </div>
       </div>
+      <img src="/img/loading.gif" id="loading-gif" style="height:50px; margin-top:10px;" hidden="true"/>
     </div>
     <div class="globe-container">
       <div id="container"></div>
@@ -65,6 +66,17 @@
       globe.animate();
 
        $("#search-btn").click(function(){
+         
+         $("#loading-gif").attr("hidden", false);
+
+         $("#container").empty();
+         var globe = new DAT.Globe(container, {colorFn: function(x){
+           var c = new THREE.Color();
+           c.setHSL( ( 0.18+x/1.5 ), 1.0, 0.5 );
+           return c;
+         }});
+         globe.animate();
+
          $.ajax({
            method: "POST",
            url: "/api/search",
@@ -91,18 +103,20 @@
 
                displayArr.push(spot.lat);
                displayArr.push(spot.lng);
-               displayArr.push(spot.statuses.length/20);
+               displayArr.push(spot.statuses.length/30);
                displayArr.push(Math.abs(avgMag) * avgScore);
 
                for(var i = 0; i < 800/numSpot; i++){
                  displayArr.push(spot.lat + generateRandomNumber(-2, 2));
                  displayArr.push(spot.lng + generateRandomNumber(-2, 2));
-                 displayArr.push(spot.statuses.length/20 + generateRandomNumber(-0.3, 0.3));
+                 displayArr.push(spot.statuses.length/30 + generateRandomNumber(-0.3, 0.3));
                  displayArr.push(avgMag * avgScore + generateRandomNumber(-0.1, 0.1) );
                }
 
                console.log(avgMag * avgMag);
              });
+
+             $("#loading-gif").attr("hidden", true);
 
              globe.addData( displayArr, {format: 'legend', name: 'twitter info'} );
              globe.createPoints();
