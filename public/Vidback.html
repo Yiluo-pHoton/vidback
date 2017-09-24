@@ -59,7 +59,7 @@
       var container = document.getElementById('container');
       var globe = new DAT.Globe(container, {colorFn: function(x){
         var c = new THREE.Color();
-        c.setHSL( ( 0.18+x ), 1.0, 0.5 );
+        c.setHSL( ( 0.18+x/1.5 ), 1.0, 0.5 );
         return c;
       }});
       globe.animate();
@@ -92,7 +92,7 @@
                displayArr.push(spot.lat);
                displayArr.push(spot.lng);
                displayArr.push(spot.statuses.length/20);
-               displayArr.push(avgMag * avgScore);
+               displayArr.push(Math.abs(avgMag) * avgScore);
 
                for(var i = 0; i < 800/numSpot; i++){
                  displayArr.push(spot.lat + generateRandomNumber(-2, 2));

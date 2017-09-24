@@ -20,7 +20,7 @@ self.searchHotWord = function(qStr, callback){
   for(var i = 0; i < numCities; i++){
     let city = cities[i];
     var geoCodeStr = city.latitude+','+city.longitude+',90km';
-    client.get('search/tweets', {q: qStr, geocode: geoCodeStr}, function(error, tweets, response) {
+    client.get('search/tweets', {q: qStr, geocode: geoCodeStr, lang:'en'}, function(error, tweets, response) {
       if(!!!tweets.statuses){
         callback(false);
         return;
