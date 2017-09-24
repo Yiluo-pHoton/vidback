@@ -23,19 +23,21 @@
         </div>
       </div>
       <img src="/img/loading.gif" id="loading-gif" style="height:50px; margin-top:10px;" hidden="true"/>
-      <button class="btn btn-change-view" hidden="true">See More</button>
+      <button class="btn btn-change-view" hidden="true" onclick="bubbleChart()">See More</button>
     </div>
     <div class="globe-container">
       <div id="container"></div>
     </div>
     <footer class="legend">
-        <p>Height: Intensity of feelings<br/>Blue -> Pink: Positive -> Negative</p>
+        <p>Height: Intensity of feelings<br/>Green -> Pink: Positive -> Negative</p>
     </footer>
 
 <script type="text/javascript" src="/js/globe.js"></script>
 <script src="/js/three.min.js"></script>
 <script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
 <script>
+    var spots = [];
+    
     function generateRandomNumber(min, max) {
         return Math.random() * (max - min) + min;
     };
@@ -88,6 +90,7 @@
            data: {q: $("#search").val()},
            success: function(data){
              console.log(data);
+             spots = data;
              var displayArr = [];
              var numSpot = data.length;
              data.forEach(function(spot){
