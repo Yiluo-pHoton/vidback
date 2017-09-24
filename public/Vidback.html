@@ -165,8 +165,9 @@
             mstatus.text = status.text;
             mstatus.sentiment = status.sentiment;
             mstatus.emotion = status.emotion;
-            mstatus.size = Math.pow(status.sentiment.magnitude + 1, 30);
-            mstatus.radius = (status.size > 3)?status.size:3;
+            mstatus.size = Math.pow(status.sentiment.magnitude + 1, 7);
+            mstatus.radius = (mstatus.size > 5)?mstatus.size:5;
+            // mstatus.radius = 20;
             graph.push(mstatus);
           });
         }

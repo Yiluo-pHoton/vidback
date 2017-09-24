@@ -29,27 +29,6 @@
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
         .force("charge", d3.forceManyBody().strength(-15));
 
-  //     graph = [{ created_at: 'Fri Sep 22 21:11:42 +0000 2017',
-  //      id: 911337232488951800,
-  //      id_str: '911337232488951813',
-  //      text: 'Schedule, what schedule? Students lining up to learn about @GE_Digital with the @GEDetroit team! #mhacks https://t.co/J3Q5nyWyxZ',
-  //     size: 20.0,
-  //   radius: 20,
-  // emotion: 4},
-  // { created_at: 'Fri Sep 22 21:11:42 +0000 2017',
-  //  id: 911337232488951800,
-  //  id_str: '911337232488951813',
-  //  text: 'Schedule, what schedule? Students lining up to learn about @GE_Digital with the @GEDetroit team! #mhacks https://t.co/J3Q5nyWyxZ',
-  // size: 20.0,
-  // radius: 20,
-  // emotion: 4},
-  // { created_at: 'Fri Sep 22 21:11:42 +0000 2017',
-  //  id: 911337232488951800,
-  //  id_str: '911337232488951813',
-  //  text: 'Schedule, what schedule? Students lining up to learn about @GE_Digital with the @GEDetroit team! #mhacks https://t.co/J3Q5nyWyxZ',
-  // size: 20.0,
-  // radius: 20,
-  // emotion: 4}];
       // sort the nodes so that the bigger ones are at the back
       graph = graph.sort(function(a,b){ return b.size - a.size; });
 
@@ -63,13 +42,143 @@
                 .attr("cy", function(d){ return d.y; })
           });
 
+        var defs = svg.append('svg:defs');
+
+        defs.append("svg:pattern")
+        .attr("id", "emotionless")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/emotionless.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "anger")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/anger.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "fear")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/fear.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "disgust")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/disgust.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "joy")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/joy.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "sadness")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/sadness.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "contempt")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/contempt.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "contempt")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/contempt.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
+        defs.append("svg:pattern")
+        .attr("id", "surprise")
+        .attr("viewBox", "0 0 100 100")
+        .attr("width", 1)
+        .attr("height", 1)
+        .append("svg:image")
+        .attr("xlink:href", '/img/surprise.png')
+        .attr("width", 100)
+        .attr("height", 100)
+        .attr("x", 0)
+        .attr("y", 0);
+
       var node = svg.append("g")
           .attr("class", "node")
         .selectAll("circle")
         .data(graph)
         .enter().append("circle")
           .attr("r", function(d) { return d.radius; })
-          .attr("fill", function(d) { return color(d.emotion); })
+          .attr("fill", function(d) {
+            switch(d.emotion){
+              case 0:
+                return "url(#emotionless)";
+              case 1:
+                return "url(#anger)";
+              case 2:
+                return "url(#fear)";
+              case 3:
+                return "url(#disgust)";
+              case 4:
+                return "url(#joy)";
+              case 5:
+                return "url(#sadness)";
+              case 6:
+                return "url(#contempt)";
+              case 7:
+                return "url(#surprise)";
+            }
+            // return color(d.emotion);
+          })
           .attr("cx", function(d){ return d.x; })
           .attr("cy", function(d){ return d.y; })
           .call(d3.drag()
